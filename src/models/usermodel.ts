@@ -11,6 +11,8 @@ const userSchema = new Schema({
         return validator.isEmail(v);
       },
     },
+    lowercase: true,
+    trim: true,
   },
   username: {
     type: String,
