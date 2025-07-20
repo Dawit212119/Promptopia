@@ -2,20 +2,20 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import {
-  signIn,
-  signOut,
-  getProviders,
-  ClientSafeProvider,
-} from "next-auth/react";
-import { object } from "zod";
+import { signIn, signOut, getProviders, useSession } from "next-auth/react";
+
+type providerType = {
+  id: string;
+  name: string;
+  type: string;
+  signinUrl: string;
+  callbackUrl: string;
+};
+type providerTypes = Record<string, providerType>;
 
 export default function Nav() {
   const [toggleDropDown, settoggleDropDown] = useState(true);
-  const [provider, setProvider] = useState<Record<
-    string,
-    ClientSafeProvider
-  > | null>(null);
+  const [provider, setProvider] = useState<providerTypes | null>(null);
   useEffect(() => {
     const providers = async () => {
       const providers = await getProviders();
@@ -24,7 +24,8 @@ export default function Nav() {
 
     providers();
   }, []);
-  const isUserLoggedIn = true;
+  const { data: session } = useSession();
+  const isUserLoggedIn = session?.user;
   return (
     <nav className="max-w-[1250px]  flex justify-between items-between m-auto mt-6">
       <Link href="/" className="flex justify-center items-center gap-2">
