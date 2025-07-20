@@ -1,9 +1,32 @@
+"use client";
 import Image from "next/image";
 import Link from "next/link";
+import { useState, useEffect } from "react";
+import {
+  signIn,
+  signOut,
+  getProviders,
+  ClientSafeProvider,
+} from "next-auth/react";
+import { object } from "zod";
 
 export default function Nav() {
+  const [toggleDropDown, settoggleDropDown] = useState(true);
+  const [provider, setProvider] = useState<Record<
+    string,
+    ClientSafeProvider
+  > | null>(null);
+  useEffect(() => {
+    const providers = async () => {
+      const providers = await getProviders();
+      setProvider(providers);
+    };
+
+    providers();
+  }, []);
+  const isUserLoggedIn = true;
   return (
-    <nav className="w-full flex justify-between items-between">
+    <nav className="max-w-[1250px]  flex justify-between items-between m-auto mt-6">
       <Link href="/" className="flex justify-center items-center gap-2">
         <Image
           src="/assets/images/logo.svg"
@@ -16,6 +39,100 @@ export default function Nav() {
           Promptopia
         </p>
       </Link>
+
+      <div className="sm:flex hidden">
+        {isUserLoggedIn ? (
+          <>
+            <Link href="/create-prompt">
+              <button className="rounded-xl p-2 text-center hover:bg-black text-black hover:text-white">
+                Create Prompt
+              </button>
+            </Link>
+
+            <button
+              className="rounded-xl p-2 text-center hover:bg-black text-black hover:text-white "
+              onClick={() => signOut}
+            >
+              signOut
+            </button>
+
+            <Link href="/profile">
+              <button className="rounded-xl p-2 text-center hover:bg-black text-black hover:text-white">
+                My Profile
+              </button>
+            </Link>
+          </>
+        ) : (
+          <>
+            {provider &&
+              Object.values(provider).map((provide) => (
+                <button key={provide.id} onClick={() => signIn(provide.id)}>
+                  SignIn
+                </button>
+              ))}
+          </>
+        )}
+      </div>
+
+      {/* mobile version  */}
+
+      {isUserLoggedIn ? (
+        <div className="sm:hidden flex relative">
+          <button onClick={() => settoggleDropDown((prev) => !prev)}>
+            <Image
+              src="/assets/images/logo.svg"
+              alt="Prompropia Logo"
+              width={30}
+              height={30}
+              priority
+            />{" "}
+          </button>
+
+          {toggleDropDown ? (
+            <div className="absolute top-full right-0 mt-3 w-full p-5 rounded-lg bg-white min-w-[210px] flex flex-col gap-2 justify-end items-end">
+              <Link href="/profile">
+                <button
+                  onClick={() => {
+                    settoggleDropDown(false);
+                  }}
+                  className="rounded-xl p-2 text-center  text-black "
+                >
+                  My Profile
+                </button>
+              </Link>
+              <button
+                className="rounded-xl p-2 text-center cursor-pointer  text-black  "
+                onClick={() => {
+                  settoggleDropDown(false);
+                  signOut();
+                }}
+              >
+                signOut
+              </button>
+              <Link href="/create-prompt">
+                <button
+                  onClick={() => settoggleDropDown(false)}
+                  className="rounded-xl p-2 text-center  text-black "
+                >
+                  Create Prompt
+                </button>
+              </Link>
+            </div>
+          ) : (
+            <></>
+          )}
+          <div></div>
+        </div>
+      ) : (
+        <>
+          {provider &&
+            Object.values(provider).map((provide) => (
+              <button key={provide.id} onClick={() => signIn(provide.id)}>
+                SignIn
+              </button>
+            ))}
+        </>
+      )}
     </nav>
   );
 }
