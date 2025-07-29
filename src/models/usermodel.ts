@@ -27,6 +27,6 @@ const userSchema = new Schema({
     type: String,
   },
 });
-userSchema.index({ email: 1 }, { unique: true });
+// userSchema.index({ email: 1 }, { unique: true });
 const User = models.User || model("User", userSchema); //  because HRM of nextjs
 export default User;

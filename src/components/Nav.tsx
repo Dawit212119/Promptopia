@@ -24,6 +24,7 @@ export default function Nav() {
 
     providers();
   }, []);
+  console.log(provider);
   const { data: session } = useSession();
   const isUserLoggedIn = session?.user;
   return (
@@ -128,7 +129,7 @@ export default function Nav() {
         <>
           {provider &&
             Object.values(provider).map((provide) => (
-              <button key={provide.id} onClick={() => signIn(provide.id)}>
+              <button key={provide.id} onClick={() => signIn("google")}>
                 SignIn
               </button>
             ))}

@@ -2,8 +2,9 @@ import NextAuth, { NextAuthConfig } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import User from "@/models/usermodel";
 import dbConnection from "./dbConnection";
+import { Profile } from "next-auth";
 const authOptions: NextAuthConfig = {
-  secret: process.env.SECRET,
+  secret: process.env.AUTH_SECRET,
   session: {
     strategy: "jwt",
   },
@@ -40,19 +41,39 @@ const authOptions: NextAuthConfig = {
       }
       return true;
     },
-  },
-  // Add cookie configuration
-  cookies: {
-    pkceCodeVerifier: {
-      name: "next-auth.pkce.code_verifier",
-      options: {
-        httpOnly: true,
-        sameSite: "lax",
-        path: "/",
-        secure: process.env.NODE_ENV === "production",
-      },
+    async jwt({ token, user, profile }) {
+      if (user || profile) {
+        token.email = user?.email ?? profile?.email ?? "";
+        token.image = user.email;
+        token.username = user.username;
+      }
+
+      return token;
+    },
+    async session({ session, token }) {
+      const userId = await User.findOne({ email: token.email });
+
+      if (token) {
+        session.userId = userId._Id;
+        session.user.email = token.email;
+        session.user.username = token.username;
+        session.user.image = token.image;
+      }
+      return session;
     },
   },
+  // Add cookie configuration
+  // cookies: {
+  //   pkceCodeVerifier: {
+  //     name: "next-auth.pkce.code_verifier",
+  //     options: {
+  //       httpOnly: true,
+  //       sameSite: "lax",
+  //       path: "/",
+  //       secure: process.env.NODE_ENV === "production",
+  //     },
+  //   },
+  // },
 };
 
 // Define or import the handler before exporting
