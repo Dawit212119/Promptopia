@@ -28,7 +28,10 @@ export default function Form({
         imagination run wild with any AI-powered platform
       </p>
 
-      <form className="w-full flex flex-col p-14 gap-8 glassmorphism">
+      <form
+        onSubmit={handleSubmit}
+        className="w-full flex flex-col p-14 gap-8 glassmorphism"
+      >
         <label className="flex flex-col gap-4">
           <span className="font-satoshi">Your Prompt</span>
           <textarea
@@ -51,9 +54,14 @@ export default function Form({
             }
           ></textarea>
         </label>
-        <div>
-          <Link href={"/"}></Link>
-          <button></button>
+        <div className="flex-end gap-5">
+          <Link href="/">Cancel</Link>
+          <button
+            className="bg-green-500 p-3 rounded-2xl"
+            disabled={submitting}
+          >
+            {submitting ? type : "Create"}
+          </button>
         </div>
       </form>
     </section>
