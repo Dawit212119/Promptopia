@@ -23,7 +23,7 @@ export default async function RootLayout({
           <div className="main">
             <div className="gradient" />
           </div>
-          <div>
+          <div className="pt-40">
             {" "}
             <main className="app">{children}</main>
           </div>

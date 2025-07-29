@@ -54,7 +54,7 @@ const authOptions: NextAuthConfig = {
       const userId = await User.findOne({ email: token.email });
 
       if (token) {
-        session.userId = userId._Id;
+        session.user.id = userId._Id;
         session.user.email = token.email;
         session.user.username = token.username;
         session.user.image = token.image;

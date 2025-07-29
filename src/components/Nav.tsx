@@ -28,7 +28,7 @@ export default function Nav() {
   const { data: session } = useSession();
   const isUserLoggedIn = session?.user;
   return (
-    <nav className="max-w-[1250px]  flex justify-between items-between m-auto mt-6">
+    <nav className="sm:max-w-[980px] max-w-[300px]   flex justify-between items-between m-auto mt-6">
       <Link href="/" className="flex justify-center items-center gap-2">
         <Image
           src="/assets/images/logo.svg"

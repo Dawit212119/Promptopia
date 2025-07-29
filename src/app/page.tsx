@@ -3,8 +3,8 @@ import Feed from "@/components/Feed";
 export default function page() {
   console.log("home");
   return (
-    <main className="max-w-7xl">
-      <section className="flex  flex-col justify-center items-center gap-2">
+    <main className="max-w-7xl glassmorphism">
+      <section className="flex  flex-col justify-center items-center gap-10">
         <h1 className="font-bold leading-[1.15] text-6xl sm:text-4xl mt-5">
           Discover & share
           <br className="max-md:hidden" />
