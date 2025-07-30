@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import PromptCard from "./promptCard";
 import PromptCardList from "./promptCardList";
 import { useRouter } from "next/navigation";
+import { Spinner, type SpinnerProps } from "@/components/ui/shadcn-io/spinner";
 export default function Feed() {
   //   search bar
   // card
@@ -29,7 +30,7 @@ export default function Feed() {
 
   //   filter
   const filterPrompt = (searchText: string): PROMPT[] => {
-    const regex = new RegExp(searchText);
+    const regex = new RegExp(searchText, "i");
     return promptData.filter(
       (post) =>
         regex.test(post.user.username) ||
@@ -91,6 +92,12 @@ export default function Feed() {
           className="sm:w-[700px] w-[300px] text-left font-satoshi bg-white rounded-md px-2 focus:border-black py-1.5 outline-0 bottom-1  shadow-lg "
         ></input>{" "}
       </form>
+      {promptData.length === 0 && (
+        <span className="mx-auto  my-15">
+          {" "}
+          <Spinner variant="circle" />{" "}
+        </span>
+      )}
       {search ? (
         <PromptCardList
           data={serachResult}

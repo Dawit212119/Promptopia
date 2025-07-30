@@ -16,16 +16,19 @@ export default async function RootLayout({
   const session = await auth();
   return (
     <html lang="en" suppressHydrationWarning={true} data-qb-installed="true">
-      <body className="max-w-screen max-h-screen">
+      <body className="max-w-screen ">
         <Provider session={session}>
-          <Nav />
+          <div className="sticky top-0 z-50">
+            {" "}
+            <Nav />
+          </div>
 
           <div className="main">
             <div className="gradient" />
           </div>
-          <div className="pt-40">
+          <div className="pt-40 pb-40">
             {" "}
-            <main className="app">{children}</main>
+            <main className="app max-h-screen overflow-y-auto">{children}</main>
           </div>
         </Provider>
       </body>

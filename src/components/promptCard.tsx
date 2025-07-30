@@ -2,7 +2,9 @@
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useState } from "react";
-
+import { MdDelete } from "react-icons/md";
+import { FaEdit } from "react-icons/fa";
+import { useRouter } from "next/navigation";
 interface card {
   _id: string;
 
@@ -25,14 +27,25 @@ export default function PromptCard({
   prompt: card | null;
   handleDeleteAction: (id: string) => Promise<void>;
   handleEditAction: (id: string) => void;
-  handleTagClickAction: (id: string) => void;
+  handleTagClickAction?: (id: string) => void;
 }) {
   const { data: session } = useSession();
+  const router = useRouter();
   const [copied, setCopied] = useState<boolean>(false);
   const handleCopy = () => {
     setCopied(true);
+    navigator.clipboard.writeText(prompt!.prompt);
+    setTimeout(() => {
+      setCopied(false);
+    }, 500);
   };
-  console.log(prompt);
+  console.log(prompt?.user._id.toString(), session?.user.id);
+  const handleProfile = () => {
+    if (prompt?.user._id.toString() === session?.user.id) {
+      router.push("/profile");
+    }
+    router.push(`/profile/${prompt?._id}?name=${prompt?.user.username}`);
+  };
   return (
     <section className="break-inside-avoid md:w-[360px] p-3 rounded-md border-gray-200 h-fit w-full backdrop-blur-lg bg-clip-padding backdrop-filter bg-white/20  border">
       <div className=" flex justify-between">
@@ -40,6 +53,7 @@ export default function PromptCard({
           <Image
             className="rounded-full cursor-pointer"
             src={prompt!.user!.image}
+            onClick={() => handleProfile}
             width={30}
             height={30}
             alt=""
@@ -66,33 +80,38 @@ export default function PromptCard({
         </div>
       </div>
       <p className="my-4">{prompt?.prompt}</p>
-
-      <div
-        className="font-inter blue_gradient"
-        onClick={() => handleTagClickAction(prompt?.tag!)}
-      >
-        #{prompt?.tag}
+      <div className="flex justify-between">
+        <div
+          className="font-inter blue_gradient cursor-pointer text-sm"
+          onClick={() =>
+            handleTagClickAction && handleTagClickAction(prompt?.tag!)
+          }
+        >
+          #{prompt?.tag}
+        </div>
+        <>
+          {prompt?.user._id.toString() === session?.user.id && (
+            <div className="flex flex-end gap-4">
+              <span
+                className="font-bold "
+                onClick={() =>
+                  handleEditAction && handleEditAction(prompt!._id)
+                }
+              >
+                <FaEdit />
+              </span>
+              <span
+                className="hover:text-xl"
+                onClick={() =>
+                  handleDeleteAction && handleDeleteAction(prompt!._id)
+                }
+              >
+                <MdDelete />
+              </span>
+            </div>
+          )}
+        </>
       </div>
-      <>
-        {prompt?.user._id.toString() === session?.user.id && (
-          <div className="flex flex-end">
-            <span
-              className="font-bold "
-              onClick={() => handleEditAction && handleEditAction(prompt!._id)}
-            >
-              Edit
-            </span>
-            <span
-              className="font-bold"
-              onClick={() =>
-                handleDeleteAction && handleDeleteAction(prompt!._id)
-              }
-            >
-              Delete
-            </span>
-          </div>
-        )}
-      </>
     </section>
   );
 }

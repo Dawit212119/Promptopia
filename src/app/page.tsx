@@ -4,7 +4,7 @@ import Feed from "@/components/Feed";
 export default function page() {
   console.log("home");
   return (
-    <main className="max-w-7xl">
+    <main className="max-w-7xl mb-500px">
       <section className="flex  flex-col justify-center items-center gap-10">
         <h1 className="font-bold leading-[1.15] text-3xl sm:text-7xl mt-5 flex flex-col">
           Discover & share

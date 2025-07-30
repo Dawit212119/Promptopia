@@ -5,10 +5,10 @@ import { NextRequest, NextResponse } from "next/server";
 export const GET = async (req: NextRequest) => {
   try {
     await dbConnection();
-    const data = await Prompt.find().populate("user");
-    console.log(data);
+    const datau = await Prompt.find().populate("user");
+    console.log(datau);
     return NextResponse.json({
-      data,
+      datau,
     });
   } catch (error) {
     console.log(error);
