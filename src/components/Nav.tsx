@@ -26,9 +26,9 @@ export default function Nav() {
   }, []);
   console.log(provider);
   const { data: session } = useSession();
-  const isUserLoggedIn = session?.user;
+  const isUserLoggedIn = false;
   return (
-    <nav className="sm:max-w-[980px] max-w-[300px]   flex justify-between items-between m-auto mt-6">
+    <nav className="w-full lg:w-[950px] px-10  flex justify-between items-between m-auto mt-6">
       <Link href="/" className="flex justify-center items-center gap-2">
         <Image
           src="/assets/images/logo.svg"
@@ -37,29 +37,29 @@ export default function Nav() {
           height={30}
           priority
         />
-        <p className="bg-gradient-to-r from-amber-500 via-orange-600 to-yellow-500 bg-clip-text text-transparent">
+        <p className="bg-gradient-to-r font-bold from-amber-500 via-orange-600 to-yellow-500 bg-clip-text text-transparent">
           Promptopia
         </p>
       </Link>
 
-      <div className="sm:flex hidden">
+      <div className="sm:flex hidden gap-6 font-bold">
         {isUserLoggedIn ? (
           <>
             <Link href="/create-prompt">
-              <button className="rounded-xl p-2 text-center hover:bg-black text-black hover:text-white">
+              <button className="rounded-xl p-2 text-center  text-black hover:text-xl">
                 Create Prompt
               </button>
             </Link>
 
             <button
-              className="rounded-xl p-2 text-center hover:bg-black text-black hover:text-white "
+              className="rounded-xl p-2 text-center  text-black hover:text-xl "
               onClick={() => signOut}
             >
               signOut
             </button>
 
             <Link href="/profile">
-              <button className="rounded-xl p-2 text-center hover:bg-black text-black hover:text-white">
+              <button className="rounded-xl p-2 text-center  text-black hover:text-xl">
                 My Profile
               </button>
             </Link>
@@ -77,64 +77,64 @@ export default function Nav() {
       </div>
 
       {/* mobile version  */}
+      <div className="sm:hidden flex relative font-bold">
+        {isUserLoggedIn ? (
+          <div>
+            <button onClick={() => settoggleDropDown((prev) => !prev)}>
+              <Image
+                src="/assets/images/logo.svg"
+                alt="Prompropia Logo"
+                width={30}
+                height={30}
+                priority
+              />{" "}
+            </button>
 
-      {isUserLoggedIn ? (
-        <div className="sm:hidden flex relative">
-          <button onClick={() => settoggleDropDown((prev) => !prev)}>
-            <Image
-              src="/assets/images/logo.svg"
-              alt="Prompropia Logo"
-              width={30}
-              height={30}
-              priority
-            />{" "}
-          </button>
-
-          {toggleDropDown ? (
-            <div className="absolute top-full right-0 mt-3 w-full p-5 rounded-lg bg-white min-w-[210px] flex flex-col gap-2 justify-end items-end">
-              <Link href="/profile">
+            {toggleDropDown ? (
+              <div className="absolute top-full right-0 mt-3 w-full p-5 rounded-lg bg-white min-w-[210px] flex flex-col gap-2 justify-end items-end">
+                <Link href="/profile">
+                  <button
+                    onClick={() => {
+                      settoggleDropDown(false);
+                    }}
+                    className="rounded-xl p-2 text-center  text-black "
+                  >
+                    My Profile
+                  </button>
+                </Link>
                 <button
+                  className="rounded-xl p-2 text-center cursor-pointer  text-black  "
                   onClick={() => {
                     settoggleDropDown(false);
+                    signOut();
                   }}
-                  className="rounded-xl p-2 text-center  text-black "
                 >
-                  My Profile
+                  signOut
                 </button>
-              </Link>
-              <button
-                className="rounded-xl p-2 text-center cursor-pointer  text-black  "
-                onClick={() => {
-                  settoggleDropDown(false);
-                  signOut();
-                }}
-              >
-                signOut
-              </button>
-              <Link href="/create-prompt">
-                <button
-                  onClick={() => settoggleDropDown(false)}
-                  className="rounded-xl p-2 text-center  text-black "
-                >
-                  Create Prompt
+                <Link href="/create-prompt">
+                  <button
+                    onClick={() => settoggleDropDown(false)}
+                    className="rounded-xl p-2 text-center  text-black "
+                  >
+                    Create Prompt
+                  </button>
+                </Link>
+              </div>
+            ) : (
+              <> </>
+            )}
+          </div>
+        ) : (
+          <>
+            {provider &&
+              Object.values(provider).map((provide) => (
+                <button key={provide.id} onClick={() => signIn("google")}>
+                  SignIn
                 </button>
-              </Link>
-            </div>
-          ) : (
-            <></>
-          )}
-          <div></div>
-        </div>
-      ) : (
-        <>
-          {provider &&
-            Object.values(provider).map((provide) => (
-              <button key={provide.id} onClick={() => signIn("google")}>
-                SignIn
-              </button>
-            ))}
-        </>
-      )}
+              ))}
+          </>
+        )}
+      </div>
     </nav>
   );
 }

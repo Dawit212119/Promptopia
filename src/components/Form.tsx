@@ -48,9 +48,9 @@ export default function Form({
           <textarea
             className="outline-0 h-[100px] text-sm p-2 rounded-lg"
             placeholder="#..."
-            value={post.prompt}
+            value={post.tag}
             onChange={(e) =>
-              setPost((prevPost) => ({ ...prevPost, prompt: e.target.value }))
+              setPost((prevPost) => ({ ...prevPost, tag: e.target.value }))
             }
           ></textarea>
         </label>

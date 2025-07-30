@@ -152,7 +152,13 @@
 .prompt_card {
   @apply flex-1 break-inside-avoid rounded-lg border border-gray-300 bg-white/20 bg-clip-padding p-6 pb-4 backdrop-blur-lg backdrop-filter md:w-[360px] w-full h-fit;
 }
-
+.modal {
+  background-clip: padding-box; /* Contains bg within padding */
+  backdrop-filter: blur(8px); /* Frosted glass effect */
+  background-color: rgba(255, 255, 255, 0.3); /* Semi-transparent */
+  border: 1px solid rgba(255, 255, 255, 0.2); /* Light border */
+  padding: 2rem;
+}
 .flex-center {
   @apply flex justify-center items-center;
 }

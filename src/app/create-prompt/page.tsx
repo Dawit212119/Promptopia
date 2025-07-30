@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 import Form from "@/components/Form";
-
+import { useRouter } from "next/navigation";
 export default function creatPrompt() {
   const { data: session } = useSession();
   const [submitting, setSubmitting] = useState(false);
@@ -12,6 +12,7 @@ export default function creatPrompt() {
     tag: "",
   });
   const [submit, setSubmit] = useState(true);
+  const Router = useRouter();
 
   const createPrompt = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -19,6 +20,7 @@ export default function creatPrompt() {
       setSubmitting(true);
       const response = await fetch("/api/prompt", {
         method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           post: post.prompt,
           tag: post.tag,
@@ -27,6 +29,9 @@ export default function creatPrompt() {
       });
       const data = await response.json();
       console.log("response text", response.text);
+      if (response.ok) {
+        Router.push("/");
+      }
       console.log(data);
     } catch (error) {
       console.log("Error createing prompt", error);
