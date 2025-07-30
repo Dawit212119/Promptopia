@@ -2,21 +2,27 @@
 import { useEffect, useState } from "react";
 import PromptCard from "./promptCard";
 import PromptCardList from "./promptCardList";
+import { useRouter } from "next/navigation";
 export default function Feed() {
   //   search bar
   // card
   interface PROMPT {
-    id: string;
+    _id: string;
     prompt: string;
     tag: string;
-    username: string;
-    email: string;
-    image: string;
+    user: {
+      _id: string;
+
+      username: string;
+      email: string;
+      image: string;
+    };
   }
 
   const [promptData, setPrompt] = useState<PROMPT[] | []>([]);
   const [serachResult, setSearchResult] = useState<PROMPT[]>([]);
   const [search, setSearch] = useState<string>("");
+  const route = useRouter();
   const [serachTimeOut, setSearchTimeOut] = useState<
     NodeJS.Timeout | undefined
   >();
@@ -26,10 +32,29 @@ export default function Feed() {
     const regex = new RegExp(searchText);
     return promptData.filter(
       (post) =>
-        regex.test(post.username) ||
+        regex.test(post.user.username) ||
         regex.test(post.prompt) ||
         regex.test(post.tag)
     );
+  };
+  //  Edit
+  const handleEdit = (id: string) => {
+    const respo = route.push(`/update/${id}`);
+  };
+  const handleDelete = async (id: string) => {
+    const is = confirm("Are you shure to delete");
+    if (is) {
+      setPrompt((prev) => prev.filter((pre) => pre._id !== id));
+      try {
+        const response = await fetch(`/api/delete/${id}`);
+        if (!response.ok) {
+          throw new Error("error while recieve response");
+        }
+        const data = await response.json();
+      } catch (error) {
+        console.log(error);
+      }
+    }
   };
   const handleSearchChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     clearTimeout(serachTimeOut);
@@ -46,7 +71,7 @@ export default function Feed() {
     const fetchData = async () => {
       const response = await fetch("/api/prompt");
       const data = await response.json();
-      setPrompt(data);
+      setPrompt(data.data);
     };
     fetchData();
   }, []);
@@ -62,7 +87,11 @@ export default function Feed() {
         ></input>{" "}
       </form>
       {search ? (
-        <PromptCardList data={serachResult} />
+        <PromptCardList
+          data={serachResult}
+          handleDelete={handleDelete}
+          handleEdit={handleEdit}
+        />
       ) : (
         <PromptCardList data={promptData} />
       )}

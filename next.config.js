@@ -5,7 +5,7 @@ const nextConfig = {
     appDir: true,
   },
   images: {
-    domains: ["example.com"],
+    domains: ["lh3.googleusercontent.com"],
   },
   webpack: (config) => {
     config.resolve.alias = {

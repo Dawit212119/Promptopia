@@ -51,10 +51,11 @@ const authOptions: NextAuthConfig = {
       return token;
     },
     async session({ session, token }) {
+      await dbConnection();
       const userId = await User.findOne({ email: token.email });
+      session.user.id = userId._id.toString();
 
       if (token) {
-        session.user.id = userId._Id;
         session.user.email = token.email;
         session.user.username = token.username;
         session.user.image = token.image;

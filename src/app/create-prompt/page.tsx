@@ -13,16 +13,16 @@ export default function creatPrompt() {
   });
   const [submit, setSubmit] = useState(true);
   const Router = useRouter();
-
+  console.log(session);
   const createPrompt = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       setSubmitting(true);
-      const response = await fetch("/api/prompt", {
+      const response = await fetch("/api/prompt/new", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          post: post.prompt,
+          prompt: post.prompt,
           tag: post.tag,
           id: session!.user.id,
         }),
@@ -47,7 +47,7 @@ export default function creatPrompt() {
         post={post}
         submitting={submitting}
         setPost={setPost}
-        handleSubmit={creatPrompt}
+        handleSubmit={createPrompt}
       />
     </div>
   );

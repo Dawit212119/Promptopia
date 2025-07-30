@@ -15,7 +15,7 @@ export default async function RootLayout({
 }) {
   const session = await auth();
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning={true} data-qb-installed="true">
       <body className="max-w-screen max-h-screen">
         <Provider session={session}>
           <Nav />

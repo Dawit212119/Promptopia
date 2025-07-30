@@ -26,7 +26,7 @@ export default function Nav() {
   }, []);
   console.log(provider);
   const { data: session } = useSession();
-  const isUserLoggedIn = false;
+  const isUserLoggedIn = session?.user;
   return (
     <nav className="w-full lg:w-[950px] px-10  flex justify-between items-between m-auto mt-6">
       <Link href="/" className="flex justify-center items-center gap-2">
@@ -53,7 +53,7 @@ export default function Nav() {
 
             <button
               className="rounded-xl p-2 text-center  text-black hover:text-xl "
-              onClick={() => signOut}
+              onClick={() => signOut()}
             >
               signOut
             </button>
