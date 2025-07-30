@@ -35,7 +35,7 @@ export default function MyProfile() {
     fetchData();
   }, []);
   const handleEditAction = (id: string) => {
-    const respo = router.push(`/update/${id}`);
+    const respo = router.push(`/update/${id}/posts`);
   };
   const handleDeleteAction = async (id: string) => {
     const is = confirm("Are you shure to delete");

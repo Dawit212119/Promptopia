@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { MdDelete } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 interface card {
   _id: string;
 
@@ -25,12 +25,13 @@ export default function PromptCard({
   handleTagClickAction,
 }: {
   prompt: card | null;
-  handleDeleteAction: (id: string) => Promise<void>;
-  handleEditAction: (id: string) => void;
+  handleDeleteAction?: (id: string) => Promise<void>;
+  handleEditAction?: (id: string) => void;
   handleTagClickAction?: (id: string) => void;
 }) {
   const { data: session } = useSession();
   const router = useRouter();
+  const pathname = usePathname();
   const [copied, setCopied] = useState<boolean>(false);
   const handleCopy = () => {
     setCopied(true);
@@ -90,26 +91,27 @@ export default function PromptCard({
           #{prompt?.tag}
         </div>
         <>
-          {prompt?.user._id.toString() === session?.user.id && (
-            <div className="flex flex-end gap-4">
-              <span
-                className="font-bold "
-                onClick={() =>
-                  handleEditAction && handleEditAction(prompt!._id)
-                }
-              >
-                <FaEdit />
-              </span>
-              <span
-                className="hover:text-xl"
-                onClick={() =>
-                  handleDeleteAction && handleDeleteAction(prompt!._id)
-                }
-              >
-                <MdDelete />
-              </span>
-            </div>
-          )}
+          {prompt?.user._id.toString() === session?.user.id &&
+            pathname === "/profile" && (
+              <div className="flex flex-end gap-4">
+                <span
+                  className="font-bold "
+                  onClick={() =>
+                    handleEditAction && handleEditAction(prompt!._id)
+                  }
+                >
+                  <FaEdit />
+                </span>
+                <span
+                  className="hover:text-xl"
+                  onClick={() =>
+                    handleDeleteAction && handleDeleteAction(prompt!._id)
+                  }
+                >
+                  <MdDelete />
+                </span>
+              </div>
+            )}
         </>
       </div>
     </section>

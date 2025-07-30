@@ -20,13 +20,13 @@ export default function PromptCardList({
   handleTagClickAction,
 }: {
   data: postType[];
-  handleDeleteAction: (id: string) => Promise<void>;
-  handleEditAction: (id: string) => void;
+  handleDeleteAction?: (id: string) => Promise<void>;
+  handleEditAction?: (id: string) => void;
   handleTagClickAction?: (e: string) => void;
 }) {
   return (
     <div className="mt-15 flex gap-7 flex-wrap">
-      {data.map((post) => (
+      {data?.map((post) => (
         <div key={post._id}>
           <PromptCard
             prompt={post}

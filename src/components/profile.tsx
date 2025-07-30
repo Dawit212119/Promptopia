@@ -21,14 +21,16 @@ export default function Profile({
 }: {
   name: string;
   post: PROMPT[];
-  handleDeleteAction: (id: string) => Promise<void>;
-  handleEditAction: (id: string) => void;
+  handleDeleteAction?: (id: string) => Promise<void>;
+  handleEditAction?: (id: string) => void;
   desc: string;
 }) {
   return (
-    <section>
-      <h1 className="">{name} Profile</h1>
-      <p>{desc}</p>
+    <section className="w-full">
+      <h1 className="head_text text-left">
+        <span className="blue_gradient">{name} Profile</span>
+      </h1>
+      <p className="desc text-left">{desc}</p>
 
       <PromptCardList
         data={post}
