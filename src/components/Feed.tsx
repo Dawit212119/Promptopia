@@ -38,10 +38,10 @@ export default function Feed() {
     );
   };
   //  Edit
-  const handleEdit = (id: string) => {
+  const handleEditAction = (id: string) => {
     const respo = route.push(`/update/${id}`);
   };
-  const handleDelete = async (id: string) => {
+  const handleDeleteAction = async (id: string) => {
     const is = confirm("Are you shure to delete");
     if (is) {
       setPrompt((prev) => prev.filter((pre) => pre._id !== id));
@@ -55,6 +55,11 @@ export default function Feed() {
         console.log(error);
       }
     }
+  };
+  const handleTagClickAction = (e: string) => {
+    setSearch(e);
+    const SearchResult = filterPrompt(e);
+    setSearchResult(SearchResult);
   };
   const handleSearchChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     clearTimeout(serachTimeOut);
@@ -89,11 +94,17 @@ export default function Feed() {
       {search ? (
         <PromptCardList
           data={serachResult}
-          handleDelete={handleDelete}
-          handleEdit={handleEdit}
+          handleDeleteAction={handleDeleteAction}
+          handleEditAction={handleEditAction}
+          handleTagClickAction={handleTagClickAction}
         />
       ) : (
-        <PromptCardList data={promptData} />
+        <PromptCardList
+          data={promptData}
+          handleDeleteAction={handleDeleteAction}
+          handleEditAction={handleEditAction}
+          handleTagClickAction={handleTagClickAction}
+        />
       )}
     </section>
   );

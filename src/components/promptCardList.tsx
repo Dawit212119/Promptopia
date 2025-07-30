@@ -1,3 +1,4 @@
+"use client";
 import PromptCard from "./promptCard";
 interface postType {
   _id: string;
@@ -14,12 +15,14 @@ interface postType {
 
 export default function PromptCardList({
   data,
-  handleDelete,
-  handleEdit,
+  handleDeleteAction,
+  handleEditAction,
+  handleTagClickAction,
 }: {
   data: postType[];
-  handleDelete: Promise<void>;
-  handleEdit: React.Cha;
+  handleDeleteAction: (id: string) => Promise<void>;
+  handleEditAction: (id: string) => void;
+  handleTagClickAction: (e: string) => void;
 }) {
   return (
     <div className="mt-15 flex gap-10">
@@ -27,8 +30,9 @@ export default function PromptCardList({
         <div key={post._id}>
           <PromptCard
             prompt={post}
-            handleDelete={handleDelete}
-            handleEdit={handleEdit}
+            handleDeleteAction={handleDeleteAction}
+            handleEditAction={handleEditAction}
+            handleTagClickAction={handleTagClickAction}
           />
         </div>
       ))}

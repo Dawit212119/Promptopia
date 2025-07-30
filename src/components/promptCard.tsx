@@ -18,11 +18,14 @@ interface card {
 
 export default function PromptCard({
   prompt,
-  handleEdit,
-  handleDelete,
+  handleEditAction,
+  handleDeleteAction,
+  handleTagClickAction,
 }: {
   prompt: card | null;
-  handleDelete: Promise<void>;
+  handleDeleteAction: (id: string) => Promise<void>;
+  handleEditAction: (id: string) => void;
+  handleTagClickAction: (id: string) => void;
 }) {
   const { data: session } = useSession();
   const [copied, setCopied] = useState<boolean>(false);
@@ -63,12 +66,33 @@ export default function PromptCard({
         </div>
       </div>
       <p className="my-4">{prompt?.prompt}</p>
-      {prompt?.user._id === session?.user.id && (
-        <div>
-          <span className="font-bold ">Edit</span>
-          <span className="font-bold">Delete</span>
-        </div>
-      )}
+
+      <div
+        className="font-inter blue_gradient"
+        onClick={() => handleTagClickAction(prompt?.tag!)}
+      >
+        #{prompt?.tag}
+      </div>
+      <>
+        {prompt?.user._id.toString() === session?.user.id && (
+          <div className="flex flex-end">
+            <span
+              className="font-bold "
+              onClick={() => handleEditAction && handleEditAction(prompt!._id)}
+            >
+              Edit
+            </span>
+            <span
+              className="font-bold"
+              onClick={() =>
+                handleDeleteAction && handleDeleteAction(prompt!._id)
+              }
+            >
+              Delete
+            </span>
+          </div>
+        )}
+      </>
     </section>
   );
 }
