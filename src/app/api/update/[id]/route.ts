@@ -4,9 +4,10 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function PATCH(
   req: NextRequest,
-  context: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
-  const id = context.params.id;
+  const params = await context.params;
+  const id = params.id;
   const session = await auth();
   const isUser = await Prompt.findById(id);
   if (!isUser) {
