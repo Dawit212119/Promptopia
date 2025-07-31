@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useSession } from "next-auth/react";
 import Form from "@/components/Form";
 import { useRouter } from "next/navigation";
-export default function creatPrompt() {
+export default function CreatPrompt() {
   const { data: session } = useSession();
   const [submitting, setSubmitting] = useState(false);
   const [post, setPost] = useState({
