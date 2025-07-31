@@ -33,7 +33,7 @@ export default function MyProfile() {
       }
     };
     fetchData();
-  }, []);
+  }, [session?.user.id]);
   const handleEditAction = (id: string) => {
     const respo = router.push(`/update/${id}/posts`);
   };
