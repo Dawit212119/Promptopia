@@ -5,6 +5,7 @@ import { useState } from "react";
 import { MdDelete } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 import { usePathname, useRouter } from "next/navigation";
+import Link from "next/link";
 interface card {
   _id: string;
 
@@ -94,14 +95,16 @@ export default function PromptCard({
           {prompt?.user._id.toString() === session?.user.id &&
             pathname === "/profile" && (
               <div className="flex flex-end gap-4">
-                <span
-                  className="font-bold "
-                  onClick={() =>
-                    handleEditAction && handleEditAction(prompt!._id)
-                  }
-                >
-                  <FaEdit />
-                </span>
+                <Link href={`/update/${prompt?._id}`}>
+                  <span
+                    className="font-bold "
+                    onClick={() =>
+                      handleEditAction && handleEditAction(prompt!._id)
+                    }
+                  >
+                    <FaEdit />
+                  </span>
+                </Link>
                 <span
                   className="hover:text-xl"
                   onClick={() =>

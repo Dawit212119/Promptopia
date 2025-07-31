@@ -56,12 +56,21 @@ export default function Form({
         </label>
         <div className="flex-end gap-5">
           <Link href="/">Cancel</Link>
-          <button
-            className="bg-green-500 p-3 rounded-2xl"
-            disabled={submitting}
-          >
-            {submitting ? type : "Create"}
-          </button>
+          {!post.prompt || !post.tag ? (
+            <button
+              className="bg-green-500 p-3 rounded-2xl cursor-not-allowed"
+              disabled={true}
+            >
+              {submitting ? type : "Create"}
+            </button>
+          ) : (
+            <button
+              className={`bg-green-500 p-3 rounded-2xl`}
+              disabled={submitting}
+            >
+              {submitting ? type : "Create"}
+            </button>
+          )}
         </div>
       </form>
     </section>

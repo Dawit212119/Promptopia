@@ -7,8 +7,13 @@ export async function GET(
   req: NextRequest,
   context: { params: { id: string } }
 ) {
-  await dbConnection();
-  const { id } = context.params;
-  const userPosts = await Prompt.find({ user: id }).populate("user");
-  return NextResponse.json({ userPosts });
+  try {
+    await dbConnection();
+    const { id } = context.params;
+    const userPosts = await Prompt.find({ user: id }).populate("user");
+    return NextResponse.json({ userPosts });
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json({ message: error });
+  }
 }
