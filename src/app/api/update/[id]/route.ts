@@ -4,9 +4,9 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function PATCH(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
-  const id = params.id;
+  const id = context.params.id;
   const session = await auth();
   const isUser = await Prompt.findById({ _id: id });
   if (!isUser) {
@@ -16,7 +16,7 @@ export async function PATCH(
     return NextResponse.json({ message: "unAuthorized" }, { status: 403 });
   }
   const { prompt, tag } = await req.json();
-  const updated = isUser.findByIdAndUpdate(
+  const updated = Prompt.findByIdAndUpdate(
     { _id: id },
     {
       ...(prompt && { prompt }),
