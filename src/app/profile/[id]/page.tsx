@@ -16,24 +16,24 @@ interface PROMPT {
   };
 }
 export default function OtherProfile() {
-  const { params } = useParams();
+  const { id } = useParams();
   const searchParams = useSearchParams();
   const name = searchParams.get("name");
   const [data, setData] = useState<PROMPT[] | []>([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`/api/user/${params}/posts`);
+        const response = await fetch(`/api/user/${id}/posts`);
         if (!response.ok) throw new Error("Error while requesting");
         const data = await response.json();
         if (data.error) throw new Error(data.error);
-        setData(data.data);
+        setData(data.userPosts);
       } catch (error) {
         console.log(error);
       }
     };
     fetchData();
-  }, [params]);
+  }, [id]);
   return (
     <Profile name={name!} post={data} desc="Welcome to My profile"></Profile>
   );

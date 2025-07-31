@@ -27,7 +27,7 @@ export default function MyProfile() {
         if (!response.ok) throw new Error("Error while requesting");
         const data = await response.json();
         if (data.error) throw new Error(data.error);
-        setData(data.data);
+        setData(data.userPosts);
       } catch (error) {
         console.log(error);
       }
