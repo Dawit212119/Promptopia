@@ -4,8 +4,6 @@
 /node_modules
 /.pnp
 .pnp.js
-.env
-.env.local
 /dist
 # testing
 /coverage
@@ -35,3 +33,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+temp_auto_push.bat
+temp_interactive_push.bat
+config.bat

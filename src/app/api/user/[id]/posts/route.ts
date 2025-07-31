@@ -5,11 +5,12 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
   req: NextRequest,
-  context: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
     await dbConnection();
-    const { id } = context.params;
+    const params = await context.params;
+    const id = params.id;
     const userPosts = await Prompt.find({ user: id }).populate("user");
     return NextResponse.json({ userPosts });
   } catch (error) {
