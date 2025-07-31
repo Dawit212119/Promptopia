@@ -11,5 +11,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  match: ["/create-prompt", "/update", "profile"],
+  matcher: ["/create-prompt", "/update", "/profile"],
 };

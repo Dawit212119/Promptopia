@@ -77,7 +77,7 @@ export default function Feed() {
     const fetchData = async () => {
       const response = await fetch("/api/prompt");
       const data = await response.json();
-      setPrompt(data.data);
+      setPrompt(data.datau);
     };
     fetchData();
   }, []);
