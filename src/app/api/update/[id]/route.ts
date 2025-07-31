@@ -8,7 +8,7 @@ export async function PATCH(
 ) {
   const id = context.params.id;
   const session = await auth();
-  const isUser = await Prompt.findById({ _id: id });
+  const isUser = await Prompt.findById(id);
   if (!isUser) {
     return NextResponse.json({ message: "Not Found!" }, { status: 404 });
   }
@@ -16,8 +16,8 @@ export async function PATCH(
     return NextResponse.json({ message: "unAuthorized" }, { status: 403 });
   }
   const { prompt, tag } = await req.json();
-  const updated = Prompt.findByIdAndUpdate(
-    { _id: id },
+  const updated = await Prompt.findByIdAndUpdate(
+    id,
     {
       ...(prompt && { prompt }),
       ...(tag && { tag }),
